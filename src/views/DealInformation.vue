@@ -10,12 +10,9 @@
             thumbnails
             infinite
             class="shadow-1 rounded-borders"
-            v-if="deal.imgUrl1"
+            v-if="deal.images"
         >
-          <q-carousel-slide :name="1" :img-src="deal.imgUrl1"/>
-          <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg"/>
-          <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg"/>
-          <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg"/>
+          <q-carousel-slide v-for="(image, index ) of deal.images" :name="doMath(index)" :img-src="image" :key="image"/>
         </q-carousel>
         <q-toolbar class="bg-primary text-white shadow-2 rounded-borders details-section">
           <q-carousel-slide name="style" class="column no-wrap flex-center">
@@ -82,6 +79,9 @@ export default {
     }
   },
   methods: {
+    doMath: function (index) {
+      return index+1
+    },
     getDealById() {
       firebaseDatabase.readSingleDocById({entity: this.tableName, id: this.$route.params.id})
           .then(res => {

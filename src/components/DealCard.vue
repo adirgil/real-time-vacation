@@ -2,17 +2,17 @@
   <q-card class="my-card bg-mycolor">
     <q-img :src="url">
 <!--      <q-btn round color="brown-5" icon="navigate_next" @click="refresh" class="q-mb-md" size="10px"/>-->
-      <div class="absolute-bottom">
+      <div class="absolute-bottom" style="padding: 0px 0px 0px 10px">
         <div class="text-h6">{{ this.currentDeal.destination }}</div>
         <div class="text-subtitle2">{{ this.currentDeal.sellerName }}</div>
       </div>
     </q-img>
     <q-card-section class="q-pt-none no-padding">
       <q-item class="single-item">
-        <q-item-section avatar>
+        <q-item-section avatar class="card-icons">
           <q-icon color="blue-grey-6" name="date_range"/>
         </q-item-section>
-        <q-item-section class="white-text">{{ this.currentDeal.date }}</q-item-section>
+        <q-item-section class="white-text">{{ this.currentDeal.date }} - {{this.currentDeal.returnDate}}</q-item-section>
         <q-btn @click="changeFavorite(currentDeal.id)" flat round :color="this.iconColor" icon="favorite" rounded>
           <q-tooltip
               transition-show="scale"
@@ -26,14 +26,14 @@
       </q-item>
 
       <q-item class="single-item">
-        <q-item-section avatar>
+        <q-item-section avatar class="card-icons">
           <q-icon color="blue-grey-6" name="flight_takeoff"/>
         </q-item-section>
         <q-item-section class="white-text">{{ this.currentDeal.airline }}</q-item-section>
       </q-item>
 
       <q-item class="single-item">
-        <q-item-section avatar>
+        <q-item-section avatar class="card-icons">
           <q-icon color="blue-grey-6" name="attach_money"/>
         </q-item-section>
         <q-item-section class="white-text">{{ this.currentDeal.price }}</q-item-section>
@@ -68,8 +68,8 @@ export default {
   methods: {
     ...mapActions('deals', ['getDeals', 'updateWishlist']),
     refresh() {
-      if(this.currentDeal.imgUrl1){
-        this.url = this.currentDeal.imgUrl1
+      if(this.currentDeal.images){
+        this.url = this.currentDeal.images[0]
       }else{
         this.url = 'https://placeimg.com/500/300/nature?t=' + Math.random()
       }
@@ -109,10 +109,7 @@ export default {
 
 <style lang="sass" scoped>
 .my-card
-  //width: 100%
-  //max-width: 250px
-  //margin-right: 5px
-  width: 260px
+  width: 250px
 
 .single-item
   padding: 0
@@ -126,4 +123,8 @@ export default {
 
 .white-text
   color: white
+
+.card-icons
+  padding: 0px
+  min-width: 30px
 </style>

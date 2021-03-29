@@ -16,6 +16,7 @@
 <script>
 import firebaseInstance from '../middleware/firebase/firebase-index'
 import firebaseDatabase from '../middleware/firebase/database/realtime-db-index'
+import {mapActions} from "vuex";
 
 export default {
   name: "Login",
@@ -28,6 +29,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('deals', ['setUser']),
     signUp(){
       firebaseInstance.firebase.auth().createUserWithEmailAndPassword(this.signup_email, this.signup_password)
           .then((userCredential) => {
@@ -50,6 +52,7 @@ export default {
             const user = userCredential.user;
             console.log('SUCCESS with normal login')
             window.user = user.uid
+            this.setUser()
             console.log('opp: ',user)
             firebaseInstance.firebase.database().ref(`users/${user.uid}`)
                 .set({email: user.email})
@@ -76,6 +79,7 @@ export default {
             var user = result.user;
             console.log('user!!!: ', user)
             window.user = result.user
+            this.setUser()
             firebaseInstance.firebase.database().ref(`users/${user.uid}`)
                 .update({email: user.email})
 

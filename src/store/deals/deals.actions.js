@@ -2,6 +2,16 @@ import database from "../../middleware/firebase/database/realtime-db-index"
 import firebaseDatabase from "@/middleware/firebase/database/realtime-db-index";
 
 export default {
+    setUser:({commit},str)=>{
+        if(str=='out'){
+            commit('setUsername', '')
+            commit('setEmail', '')
+        }else{
+            commit('setUsername', window.user.displayName)
+            commit('setEmail', window.user.email)
+        }
+
+    },
     getDeals: async ({commit}) => {
         const deals = await database.read({entity: 'deals'})
         const wishlist = await database.getWishListArray({id: window.user.uid})

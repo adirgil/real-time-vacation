@@ -3,17 +3,16 @@
     <q-drawer
         v-model="leftDrawerOpen"
         show-if-above
-        bordered
         content-class="bg-grey-2"
     >
       <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
         <q-list>
           <q-item-label header>options</q-item-label>
-          <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+          <q-item clickable @click="logout()">
             <q-item-section avatar>
               <q-icon name="logout"/>
             </q-item-section>
-            <q-item-section @click="logout()">
+            <q-item-section >
               <q-item-label>Log Out</q-item-label>
               <q-item-label caption>dont!</q-item-label>
             </q-item-section>
@@ -44,14 +43,14 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png">
           </q-avatar>
-          <div class="text-weight-bold">userrrr</div>
-          <div>adirgil7777@gmail.com</div>
+          <div class="text-weight-bold">{{this.username}}</div>
+          <div>{{this.userEmail}}</div>
         </div>
       </q-img>
     </q-drawer>
 
     <q-page-container>
-      <q-toolbar class="bg-darkblue text-white shadow-2 rounded-borders glossy ">
+      <q-toolbar class="bg-darkblue text-white shadow-2 glossy ">
         <q-btn
             flat
             dense
@@ -87,6 +86,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import BackOffice from "@/views/BackOffice";
 import firebaseInstance from './middleware/firebase/firebase-index'
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: 'LayoutDefault',
@@ -94,6 +94,7 @@ export default {
   components: {
     HelloWorld, BackOffice
   },
+  computed: mapState('deals', ['username', 'userEmail']),
 
   data() {
     return {
@@ -103,11 +104,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions('deals', ['setUser']),
     logout(){
       firebaseInstance.firebase.auth().signOut().then(() => {
-        console.log(window.user + 'Loggeg out!!')
+        console.log(JSON.stringify(window.user) + 'Logged out!!')
+        this.setUser('out')
       }).catch((error) => {
-        // An error happened.
+        console.log(error)
       });
 
     },

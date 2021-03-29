@@ -10,31 +10,9 @@
                 <q-radio v-model="radioSelect" val="israel" label="Israel"/>
               </div>
             </div>
-<!--            <q-select-->
-<!--                class="select-country"-->
-<!--                v-if="radioSelect!=='israel'"-->
-<!--                outlined-->
-<!--                v-model="selectedCountry"-->
-<!--                use-input-->
-<!--                label="Destination"-->
-<!--                :options="countryOptions"-->
-<!--                @filter="filterFn"-->
-<!--                style="width: 250px"-->
-<!--                bg-color="white"-->
-<!--            >-->
-<!--              <template v-slot:no-option>-->
-<!--                <q-icon name="place"/>-->
-<!--                <q-item>-->
-<!--                  <q-item-section class="text-grey">-->
-<!--                    No results-->
-<!--                  </q-item-section>-->
-<!--                </q-item>-->
-<!--              </template>-->
-<!--            </q-select>-->
-
           </div>
 
-          <div style="display:flex; justify-content: space-between;" >
+          <div style="display:flex;" >
             <q-select outlined
                       @filter="filterFn"
                       v-if="radioSelect!=='israel'"
@@ -80,7 +58,7 @@
                   anchor="top middle"
                   self="bottom middle"
               >
-                cancel search!
+                clean search!
               </q-tooltip>
             </q-btn>
             <span class="glossy text-white">{{ searchLabel }}</span>
@@ -107,6 +85,7 @@ import DealCard from "@/components/DealCard";
 import DealInformation from "@/views/DealInformation";
 import firebaseDatabase from '../middleware/firebase/database/realtime-db-index'
 import {mapState, mapActions, mapMutations} from 'vuex'
+import { date } from 'quasar'
 
 
 const stringOptions = ["", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla",
@@ -146,8 +125,8 @@ export default {
     return {
       tab: '',
       searchLabel: '',
-      fromSearch:'',
-      toSearch: '',
+      fromSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
+      toSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
       maxPrice: 0,
       radioSelect: 'all',
       countryOptions: stringOptions,
@@ -189,18 +168,25 @@ export default {
           this.searchLabel = `${this.selectedCountry}, `
         }
       }
-      this.searchLabel += `${this.maxPrice}$, `
+      this.searchLabel += ` max:${this.maxPrice}$, `
       const result = res.filter(deal => {
         return parseInt(deal.price) <= this.maxPrice
       })
-      this.allDealsFiltered = result
+      const fromDate = date.extractDate(this.fromSearch , 'YYYY/MM/DD')
+      const toDate = date.extractDate(this.toSearch, 'YYYY/MM/DD')
+      const finalResult = result.filter(deal => {
+        return fromDate >= date.extractDate(deal.date , 'YYYY-MM-DD')  &&
+            toDate <= date.extractDate(deal.returnDate , 'YYYY-MM-DD')
+      })
+      this.searchLabel += ` between ${this.fromSearch} to ${this.toSearch}`
+      this.allDealsFiltered = finalResult
     },
     cancelSearch() {
       this.allDealsFiltered = this.deals
       this.searchLabel = ''
     },
     filterOnlyInIsrael() {
-      this.allDealsFiltered = this.allDeals.filter(deal => {
+      this.allDealsFiltered = this.deals.filter(deal => {
         return deal.destination == 'Israel'
       })
     },
@@ -219,6 +205,7 @@ export default {
     },
   },
   created() {
+    console.log(window.user)
     this.getDeals().then(() => {
       this.displayCards = true
       this.allDealsFiltered = this.deals
@@ -241,7 +228,6 @@ export default {
   display: flex
   justify-content: center
   align-items: center
-  margin-top: 16px
 
 .inside-filter-div
   background-color: #02122c
@@ -252,6 +238,7 @@ export default {
   flex-direction: column
   justify-content: space-between
   padding: 10px 10px
+  opacity: 0.9
 
 .top-filter
   display: flex

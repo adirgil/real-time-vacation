@@ -1,4 +1,7 @@
 export default {
+    setUsername:((state, username)=>state.username = username),
+    setEmail:((state, email)=>state.userEmail = email),
+
     setWishlist: ((state, wishlistArray) => state.wishlistArray = wishlistArray),
 
     insertToWishlist: ((state, id) => state.wishlistArray.push(id)),

@@ -39,22 +39,22 @@
       <q-input type="text" outlined v-model="localEditedDeal.phone" label="Phone Number"/>
       <q-input type="number" outlined v-model="localEditedDeal.purchaseCost" label="Purchase Cost"/>
       <q-input type="number" outlined v-model="localEditedDeal.price" label="Price"/>
-<!--      <div>-->
-<!--        <q-file outlined v-model="uploadFile1" no-caps>upload a image</q-file>-->
-<!--        <q-btn @click="uploadToStorage()">upload</q-btn>-->
-<!--      </div>-->
-      <q-file color="grey-3" outlined label-color="orange" v-model="uploadFile1" label="image1">
-        <template v-slot:append>
-          <q-icon name="attachment" color="orange" />
-        </template>
-      </q-file>
-      <q-file color="grey-3" outlined label-color="orange" v-model="uploadFile2" label="image2">
-        <template v-slot:append>
-          <q-icon name="attachment" color="orange" />
-        </template>
-      </q-file>
-      <q-btn v-if="!deal" class="glossy" color="accent" label="Add" @click="addDeal()"/>
-      <q-btn v-if="deal" class="glossy" color="accent" label="Update" @click="updateDealLocal()"/>
+      <!--      <div>-->
+      <!--        <q-file outlined v-model="uploadFile1" no-caps>upload a image</q-file>-->
+      <!--        <q-btn @click="uploadToStorage()">upload</q-btn>-->
+      <!--      </div>-->
+        <q-file
+            v-model="images"
+            label="Pick files"
+            filled
+            multiple
+            append
+            style="max-width: 300px">
+          <q-icon name="attachment" color="orange"/>
+        </q-file>
+      <q-btn v-if="!deal && !spinner" class="glossy" color="accent" label="Add" @click="addDeal()"/>
+      <q-btn v-if="deal && !spinner" class="glossy" color="accent" label="Update" @click="updateDealLocal()"/>
+      <q-spinner-pie color="orange" v-if="spinner"  size="5em" style="margin-left: 120px"/>
     </div>
   </div>
 </template>
@@ -103,8 +103,10 @@ export default {
   data() {
     return {
       text: '',
+      spinner: false,
       uploadFile1: null,
-      uploadFile2:null,
+      uploadFile2: null,
+      images:null,
       model: null,
       countryOptions: stringOptions,
       airlineOptions: ['with no flight', 'ELAL', 'ISRAIR'],
@@ -123,30 +125,35 @@ export default {
     }
   },
   methods: {
-    ...mapActions('deals', ['insertDeal', 'updateDeal','setEditedDealById']),
+    ...mapActions('deals', ['insertDeal', 'updateDeal', 'setEditedDealById']),
     ...mapMutations('deals', ['setEditedDeal', "setEditedDealId"]),
     uploadToStorage() {
-      firebaseDatabase.uploadAFile({entity: 'deals-images', file: this.uploadFile1})
+      firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.images})
           .then(result => {
             console.log('URL: ', result)
           })
 
     },
     addDeal() {
-      firebaseDatabase.uploadAFile({entity: 'deals-images', file: this.uploadFile1})
-          .then(result => {
-            console.log('URL: ', result)
-            this.localEditedDeal.imgUrl1  = result
-            firebaseDatabase.uploadAFile({entity: 'deals-images', file: this.uploadFile2})
-                .then(result => {
-                  console.log('URL: ', result)
-                  this.localEditedDeal.imgUrl2  = result
-                  this.localEditedDeal.userId = window.user.uid
-                  this.setEditedDeal(this.localEditedDeal)
-                  this.insertDeal()
-                  this.$router.push('/home')
-                })
-          })
+      this.spinner = true
+      if (this.images) {
+        firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.images})
+            .then(result => {
+              console.log('url array: ', result)
+              this.localEditedDeal.images = result
+              this.localEditedDeal.userId = window.user.uid
+              this.setEditedDeal(this.localEditedDeal)
+              this.insertDeal()
+              this.$router.push('/home')
+            })
+      } else {
+        console.log('no images')
+        this.localEditedDeal.userId = window.user.uid
+        this.setEditedDeal(this.localEditedDeal)
+        this.insertDeal()
+        this.$router.push('/home')
+      }
+
       /////NEED TO FIX UPLOAD
 
     },
@@ -176,11 +183,11 @@ export default {
     }
   },
   created() {
-    if(this.$route.params.id){
+    if (this.$route.params.id) {
       this.setEditedDealId(this.$route.params.id)
       this.setEditedDealById()
-          .then(()=>{
-            Object.assign(this.localEditedDeal , this.editedDeal)
+          .then(() => {
+            Object.assign(this.localEditedDeal, this.editedDeal)
           })
     }
 

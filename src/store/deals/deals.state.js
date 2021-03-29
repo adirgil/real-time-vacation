@@ -1,4 +1,6 @@
 export default {
+    username:'',
+    userEmail:'',
     deals: [],
     wishlistArray:[],
     editedDealId: '',
@@ -15,7 +17,6 @@ export default {
         purchaseCost: 0,
         userId: '',
         isFavorite: false,
-        imgUrl1:'',
-        imgUrl2:''
+        images:[]
     }
 }
