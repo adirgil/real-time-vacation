@@ -1,7 +1,11 @@
 <template>
-  <div>
+  <div style="background-color: #f1f2f8">
+    <q-item-section avatar style="display: flex">
+      <q-btn no-caps flat round icon="add" rounded text-color="none" class="header">
+        Post a New Deal
+      </q-btn>
+    </q-item-section>
     <AddDeal :tableName="'deals'"/>
-    <h1>New Deal!</h1>
   </div>
 </template>
 
@@ -15,6 +19,8 @@ import AddDeal from "@/components/AddDeal";
 
 
 
-<style scoped>
-
+<style lang="sass" scoped>
+.header
+  font-size: 30px
+  padding: 10px
 </style>

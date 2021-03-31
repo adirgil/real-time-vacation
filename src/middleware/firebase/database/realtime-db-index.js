@@ -16,6 +16,11 @@ function remove(options) {
 
 }
 
+//when deleting deal
+function removeFromWishlist(options){
+
+}
+
 function update(options) {
     return firebaseInstance.firebase.database().ref(`/${options.entity}/${options.id}`).update(options.deal);
 }

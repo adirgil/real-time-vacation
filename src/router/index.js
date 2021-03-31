@@ -63,6 +63,8 @@ const router = new VueRouter({
 
 // router.beforeEach((to, from, next) => {
 //     const user = firebaseInstance.firebase.auth().currentUser
+//     console.log('AUTH',firebaseInstance.firebase.auth())
+//     console.log('USERRRR',user)
 //     if (user && to.meta.authNotRequired || !user && !to.meta.authNotRequired) {
 //         const path = !user ? '/' : '/home'
 //         return next(path)

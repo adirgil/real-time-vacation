@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <br><br><br>
-    <div class="q-gutter-md row items-start all-inputs">
+    <div class="row items-start all-inputs">
       <q-input type="text" outlined v-model="localEditedDeal.sellerName" label="Seller Name"/>
       <!--      <q-input type="text" outlined v-model="editedDeal.destination" label="Destination"/>-->
       <q-select
@@ -12,7 +12,6 @@
           label="Destination"
           :options="countryOptions"
           @filter="filterFn"
-          style="width: 250px"
       >
         <template v-slot:no-option>
           <q-item>
@@ -30,7 +29,6 @@
           filled
           v-model="localEditedDeal.airline"
           :options="airlineOptions"
-          style="width: 250px"
       />
       <q-input v-model="localEditedDeal.date" filled type="date" label="Departing"/>
       <q-input v-model="localEditedDeal.returnDate" filled type="date" label="Returning"/>
@@ -43,18 +41,20 @@
       <!--        <q-file outlined v-model="uploadFile1" no-caps>upload a image</q-file>-->
       <!--        <q-btn @click="uploadToStorage()">upload</q-btn>-->
       <!--      </div>-->
-        <q-file
-            v-model="images"
-            label="Pick files"
-            filled
-            multiple
-            append
-            style="max-width: 300px">
-          <q-icon name="attachment" color="orange"/>
-        </q-file>
+
+      <!--          append for q-file if you want to append-->
+
+      <q-file
+          v-model="imagesLocal"
+          label="Pick files"
+          outlined
+          multiple
+          style="max-width: 300px">
+        <q-icon name="attachment" color="orange"/>
+      </q-file>
       <q-btn v-if="!deal && !spinner" class="glossy" color="accent" label="Add" @click="addDeal()"/>
       <q-btn v-if="deal && !spinner" class="glossy" color="accent" label="Update" @click="updateDealLocal()"/>
-      <q-spinner-pie color="orange" v-if="spinner"  size="5em" style="margin-left: 120px"/>
+      <q-spinner-pie color="orange" v-if="spinner" size="5em" style="margin-left: 120px"/>
     </div>
   </div>
 </template>
@@ -66,6 +66,7 @@ import firebaseIndex from '../middleware/firebase/firebase-index'
 
 import firebaseDatabase from '../middleware/firebase/database/realtime-db-index'
 import {mapState, mapActions, mapMutations} from 'vuex'
+import {date} from "quasar";
 
 const stringOptions = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla",
   "Antigua &amp; Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria",
@@ -106,16 +107,16 @@ export default {
       spinner: false,
       uploadFile1: null,
       uploadFile2: null,
-      images:null,
       model: null,
+      imagesLocal: null,
       countryOptions: stringOptions,
       airlineOptions: ['with no flight', 'ELAL', 'ISRAIR'],
       localEditedDeal: {
         sellerName: '',
         destination: '',
         airline: '',
-        date: '',
-        returnDate: '',
+        date: 'depart date',
+        returnDate: 'return date',
         stayTime: 0,
         hotel: '',
         phone: '',
@@ -136,12 +137,13 @@ export default {
     },
     addDeal() {
       this.spinner = true
-      if (this.images) {
-        firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.images})
+      if (this.imagesLocal) {
+        firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.imagesLocal})
             .then(result => {
               console.log('url array: ', result)
               this.localEditedDeal.images = result
               this.localEditedDeal.userId = window.user.uid
+              //this.localEditedDeal.createdTime = 'ggg'
               this.setEditedDeal(this.localEditedDeal)
               this.insertDeal()
               this.$router.push('/home')
@@ -149,6 +151,8 @@ export default {
       } else {
         console.log('no images')
         this.localEditedDeal.userId = window.user.uid
+        //this.localEditedDeal.createdTime = new Date()
+
         this.setEditedDeal(this.localEditedDeal)
         this.insertDeal()
         this.$router.push('/home')
@@ -158,14 +162,25 @@ export default {
 
     },
     updateDealLocal() {
-      this.setEditedDeal(this.localEditedDeal)
-      this.updateDeal()
-      this.$router.push('/home')
-      // firebaseDatabase.update({entity: this.tableName, id: this.editedDeal.id, deal: this.editedDeal})
-      //     .then(res => {
-      //       console.log(res)
-      //       this.$router.push('/')
-      //     })
+      this.spinner = true
+      console.log(this.imagesLocal)
+      if (this.imagesLocal) {
+        firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.imagesLocal})
+            .then(result => {
+              console.log('url array: ', result)
+              this.localEditedDeal.images = result
+              this.localEditedDeal.userId = window.user.uid
+              this.setEditedDeal(this.localEditedDeal)
+              this.updateDeal()
+              this.$router.push('/home')
+            })
+      } else {
+        console.log('no images')
+        this.localEditedDeal.userId = window.user.uid
+        this.setEditedDeal(this.localEditedDeal)
+        this.updateDeal()
+        this.$router.push('/home')
+      }
 
     },
     filterFn(val, update) {
@@ -202,4 +217,6 @@ export default {
 .all-inputs
   display: grid
   grid-template-columns: 1fr 1fr 1fr
+  column-gap: 15px
+  row-gap: 15px
 </style>

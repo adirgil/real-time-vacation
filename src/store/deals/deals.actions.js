@@ -2,11 +2,11 @@ import database from "../../middleware/firebase/database/realtime-db-index"
 import firebaseDatabase from "@/middleware/firebase/database/realtime-db-index";
 
 export default {
-    setUser:({commit},str)=>{
-        if(str=='out'){
+    setUser: ({commit}, str) => {
+        if (str == 'out') {
             commit('setUsername', '')
             commit('setEmail', '')
-        }else{
+        } else {
             commit('setUsername', window.user.displayName)
             commit('setEmail', window.user.email)
         }
@@ -52,6 +52,23 @@ export default {
         const dealId = state.editedDealId
         commit('resetEditedDealId')
         commit('deleteDeal', dealId)
+        // remove from wishlist of all the users
+        const users = await database.read({entity: 'users'})
+        console.log('users: ', users)
+        for (const user of users) {
+            if (user.wishlist) {
+                if (user.wishlist.includes(dealId)) {
+                    console.log('deleted!')
+                    const newWishlistArr = user.wishlist.filter(id => id !== dealId)
+                    console.log(newWishlistArr)
+                    await database.changeWishList({userId: user.id, arrayOfIds: newWishlistArr})
+                    //update wishlist in store
+                    if(user.id === window.user.uid){
+                        commit('setWishlist', newWishlistArr)
+                    }
+                }
+            }
+        }
     },
 
     insertDeal: async ({state, commit}) => {
@@ -67,17 +84,17 @@ export default {
     },
 
     updateWishlist: async ({state, commit}, id) => {
-        console.log(id,'id')
+        console.log(id, 'id')
         const wishlist = await database.getWishListArray({id: window.user.uid})
         let newWishlistArr = []
         //STORE
         if (wishlist.includes(id)) {
             newWishlistArr = wishlist.filter(dealId => dealId !== id)
-            commit('setWishlist',newWishlistArr )
+            commit('setWishlist', newWishlistArr)
         } else {
             wishlist.push(id)
             newWishlistArr = wishlist
-            commit('setWishlist',newWishlistArr)
+            commit('setWishlist', newWishlistArr)
         }
         console.log(newWishlistArr, 'wishlist')
         //DB

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="q-pa-md"><h4>Admin`s Menagment</h4></div>
+  <div style="background-color: #f1f2f8">
+    <div class="q-pa-md"><h4>Admin`s Managment</h4></div>
     <AddDeal :tableName="'deals'" @dealAdded="reloadTable"/>
     <AdminTable :tableName="'deals'" :isReload="isReload"/>
   </div>

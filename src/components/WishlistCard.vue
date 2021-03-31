@@ -10,10 +10,7 @@
             navigation
             infinite
         >
-          <q-carousel-slide :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" />
-          <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
-          <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
-          <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
+          <q-carousel-slide v-for="(image, index ) of currentDeal.images" :name="doMath(index)" :img-src="image" :key="image"/>
         </q-carousel>
       </div>
 
@@ -21,7 +18,7 @@
         <q-item-label overline>Seller: {{currentDeal.sellerName}}</q-item-label>
         <q-item-label overline>Phone Number: {{currentDeal.phone}}</q-item-label>
         <q-item-label overline>Airline: {{currentDeal.airline}}</q-item-label>
-        <q-item-label overline>Stay Time: {{currentDeal.stayTime}}</q-item-label>
+        <q-item-label overline>Stay Time: {{currentDeal.stayTime}} days</q-item-label>
         <q-item-label overline>Hotel: {{currentDeal.hotel}}</q-item-label>
         <q-item-label overline>Price: {{currentDeal.price}}$</q-item-label>
 
@@ -33,7 +30,7 @@
     <q-card-actions>
       <q-btn flat round icon="event" />
       <q-btn flat>
-        {{deal.date }}
+        {{deal.date }} - {{deal.returnDate}}
       </q-btn>
       <q-btn flat>
         {{currentDeal.destination}}
@@ -53,6 +50,11 @@ export default {
       currentDeal: {}
     }
   },
+  methods:{
+    doMath: function (index) {
+      return index+1
+    }
+  },
   created() {
     if (this.deal) {
       this.currentDeal = this.deal
@@ -64,7 +66,7 @@ export default {
 <style lang="sass" scoped>
 .my-card
   width: 100%
-  max-width: 80%
+  max-width: 90%
   margin-bottom: 15px
 .img-style
   height: 170px

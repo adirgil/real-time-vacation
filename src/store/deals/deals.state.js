@@ -17,6 +17,7 @@ export default {
         purchaseCost: 0,
         userId: '',
         isFavorite: false,
-        images:[]
+        images:[],
+        createdOn:''
     }
 }

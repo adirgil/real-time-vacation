@@ -1,6 +1,11 @@
 <template>
-  <div class="q-pa-md">
-    <h4>WISHLIST</h4>
+  <div class="q-pa-md wishlist-main">
+    <q-item-section avatar style="display: flex">
+      <q-btn no-caps flat round color="red" icon="favorite" rounded text-color="none" class="header">
+        My Wishlist
+      </q-btn>
+    </q-item-section>
+
     <WishlistCard v-for="(deal, key) of arrayOfWishlist" :key="key"
                   :deal="deal"/>
   </div>
@@ -24,7 +29,7 @@ export default {
   components: {WishlistCard},
   created() {
     this.arrayOfWishlist = this.deals.filter(deal => this.wishlistArray.includes(deal.id))
-    console.log(this.arrayOfWishlist,'ff')
+    console.log(this.arrayOfWishlist,'wishlist')
     //const wishlistIds = localStorageDriver.selectAllWishListIds()
     //const allDeals = localStorageDriver.selectAllDeals('dealsTable')
     // firebaseDatabase.read({entity: 'deals'}).then(allDeals => {
@@ -39,6 +44,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+.wishlist-main
+  background-color: #f1f2f8
+.header
+  font-size: 30px
+  padding: 10px
 </style>
