@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <AddDeal v-if="dataForInputs" :tableName="this.tableName" :deal="this.deal"/>
+  <div style="background-color: #f1f2f8">
+    <AddDeal v-if="dataForInputs && deal.userId === windowUserId" :tableName="this.tableName" :deal="this.deal"/>
     <div class="q-pa-md">
       <div class="">
         <q-carousel
@@ -65,9 +65,11 @@ import localStorageDriver from '../middleware/local-storage/storageIndex'
 import apiIndex from "@/middleware/api/apiIndex";
 import AddDeal from "@/components/AddDeal";
 import firebaseDatabase from '../middleware/firebase/database/realtime-db-index'
+import {mapState} from "vuex";
 
 export default {
   name: "DealInformation",
+  computed: mapState('deals', ['editedDeal', 'deals']),
   components: {AddDeal},
   data() {
     return {
@@ -75,7 +77,8 @@ export default {
       picSlide: 1,
       slide: 'style',
       tableName: 'deals',
-      dataForInputs: false
+      dataForInputs: false,
+      windowUserId:''
     }
   },
   methods: {
@@ -83,15 +86,19 @@ export default {
       return index+1
     },
     getDealById() {
-      firebaseDatabase.readSingleDocById({entity: this.tableName, id: this.$route.params.id})
-          .then(res => {
-            this.deal = res
-            this.deal.id = this.$route.params.id
-            this.dataForInputs = true
-            console.log(this.deal)
-
-          })
-      //this.deal = localStorageDriver.getDealById(this.tableName, this.$route.params.id)
+      this.deal = this.deals.filter(d=>d.id === this.$route.params.id)[0]
+      console.log(this.deal.userId)
+      console.log(window.user.uid)
+      this.windowUserId = window.user.uid
+      this.dataForInputs = true
+      // firebaseDatabase.readSingleDocById({entity: this.tableName, id: this.$route.params.id})
+      //     .then(res => {
+      //       this.deal = res
+      //       this.deal.id = this.$route.params.id
+      //       this.dataForInputs = true
+      //       console.log(this.deal)
+      //
+      //     })
     },
   },
   created() {

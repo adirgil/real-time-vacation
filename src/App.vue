@@ -1,65 +1,8 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-sky">
-<!--    <q-drawer-->
-<!--        v-model="leftDrawerOpen"-->
-<!--        show-if-above-->
-<!--        content-class="bg-grey-2"-->
-<!--    >-->
-<!--      <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">-->
-<!--        <q-list>-->
-<!--          <q-item-label header>options</q-item-label>-->
-<!--          <q-item clickable @click="logout()">-->
-<!--            <q-item-section avatar>-->
-<!--              <q-icon name="logout"/>-->
-<!--            </q-item-section>-->
-<!--            <q-item-section >-->
-<!--              <q-item-label>Log Out</q-item-label>-->
-<!--              <q-item-label caption>dont!</q-item-label>-->
-<!--            </q-item-section>-->
-<!--          </q-item>-->
-
-<!--          <q-item clickable @click="goToPostNewDeal()">-->
-<!--            <q-item-section avatar>-->
-<!--              <q-icon name="add"/>-->
-<!--            </q-item-section>-->
-<!--            <q-item-section>-->
-<!--              <q-item-label>Post New Deal</q-item-label>-->
-<!--            </q-item-section>-->
-<!--          </q-item>-->
-
-<!--          <q-item clickable @click="">-->
-<!--            <q-item-section avatar>-->
-<!--              <q-icon name="settings"/>-->
-<!--            </q-item-section>-->
-<!--            <q-item-section>-->
-<!--              <q-item-label>Settings</q-item-label>-->
-<!--            </q-item-section>-->
-<!--          </q-item>-->
-
-<!--        </q-list>-->
-<!--      </q-scroll-area>-->
-<!--      <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 130px">-->
-<!--        <div class="absolute-bottom bg-darkblue glossy">-->
-<!--          <q-avatar size="56px" class="q-mb-sm">-->
-<!--            <img src="https://cdn.quasar.dev/img/boy-avatar.png">-->
-<!--          </q-avatar>-->
-<!--          <div class="text-weight-bold">{{this.username}}</div>-->
-<!--          <div>{{this.userEmail}}</div>-->
-<!--        </div>-->
-<!--      </q-img>-->
-<!--    </q-drawer>-->
 
     <q-page-container>
-<!--      <q-toolbar class="bg-darkblue text-white shadow-2 glossy ">-->
         <q-toolbar class="my-toolbar">
-<!--        <q-btn-->
-<!--            flat-->
-<!--            dense-->
-<!--            round-->
-<!--            @click="leftDrawerOpen = !leftDrawerOpen"-->
-<!--            aria-label="Menu"-->
-<!--            icon="menu"-->
-<!--        />-->
 
         <q-btn flat no-caps @click="goToHome()">
           <img class="map-pin-icon" src="./assets/globe.svg">
@@ -67,21 +10,13 @@
         </q-btn>
         <q-space/>
 
-        <!--
-          notice shrink property since we are placing it
-          as child of QToolbar
-        -->
         <q-tabs v-model="tab" shrink>
-<!--          <q-tab name="back-office" no-caps label="Back Office" @click="goToBackOffice()"/>-->
-<!--          <q-tab name="wish-list" no-caps label="Wishlist" @click="goToWishlist()"/>-->
-<!--          <q-tab name="my-deals" no-caps label="My Deals" @click="goToMyDeals()"/>-->
-<!--          <q-tab name="new-deal" no-caps label="Post New Deal" @click="goToPostNewDeal()"/>-->
           <q-tab name="logout" no-caps label="Logout" @click="logout()"/>
           <q-btn-dropdown
               split
-              class="glossy"
-              color="grey"
-              label="Options"
+              label="More"
+              no-caps
+              style="background-color: #02122c; color: #FF7B59"
           >
             <q-list>
               <q-item clickable v-close-popup @click="goToPostNewDeal()">
@@ -124,6 +59,11 @@
         </q-tabs>
 
       </q-toolbar>
+      <q-footer style="background-color: #02122c; color: #FF7B59" reveal elevated>
+        <q-toolbar>
+          <q-toolbar-title>Contact 0526999340 - Adir</q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
       <router-view/>
     </q-page-container>
   </q-layout>

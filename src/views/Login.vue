@@ -1,15 +1,38 @@
 <template>
-  <div>
-    <h2>Login</h2>
-    <q-input outlined v-model="email" label="Email" />
-    <q-input outlined v-model="password" label="Password" />
-    <q-btn @click="login()">Login</q-btn>
-    <q-btn @click="loginWithGoogle()">Login With Google</q-btn>
+  <div class="login-page">
+    <div class="inline-box">
+      <img class="map-pin-icon" src="../assets/globe.svg">
+      <div style="font-size: 30px">Real Time Vacation</div>
+      <div class="login-box">
+        <span style="font-size: 15px">Log In with </span>
+        <div>
+          <q-btn @click="loginWithGoogle()" no-caps>
+            <img class="login-icons" src="../assets/google.svg">
+            Google
+          </q-btn>
+          <q-btn @click="loginWithFacebook()" no-caps style="margin-left: 10px">
+            <img class="login-icons" src="../assets/facebook2.svg">
+            Facebook
+          </q-btn>
+        </div>
+        <span>or</span>
+        <q-input outlined v-model="email" label="Email"/>
+        <q-input outlined v-model="password" label="Password"/>
+        <q-btn no-caps @click="login()">Log In</q-btn>
+        <span>do not have an account? <span class="signup-btn"> Sign Up</span></span>
+      </div>
 
-    <h2>Sign-Up</h2>
-    <q-input outlined v-model="signup_email" label="Email" />
-    <q-input outlined v-model="signup_password" label="Password" />
-    <q-btn @click="signUp()">Sign Up!</q-btn>
+    </div>
+<!--    <h2>Login</h2>-->
+<!--    <q-input outlined v-model="email" label="Email" />-->
+<!--    <q-input outlined v-model="password" label="Password" />-->
+<!--    <q-btn @click="login()">Login</q-btn>-->
+<!--    <q-btn @click="loginWithGoogle()">Login With Google</q-btn>-->
+
+<!--    <h2>Sign-Up</h2>-->
+<!--    <q-input outlined v-model="signup_email" label="Email" />-->
+<!--    <q-input outlined v-model="signup_password" label="Password" />-->
+<!--    <q-btn @click="signUp()">Sign Up!</q-btn>-->
   </div>
 </template>
 
@@ -104,6 +127,39 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+.login-page
+  background-color: #02122c
+  color: white
+  display: flex
+  justify-content: center
+.inline-box
+  padding: 50px
+  margin: 50px
+  background-color: cadetblue
+  border-radius: 20px
+  display: grid
+  justify-items: center
+.login-box
+  display: grid
+  justify-items: center
+  row-gap: 10px
+.login-icons
+  height: 30px
+  width: 30px
+  margin-right: 5px
+.map-pin-icon
+  height: 50px
+  width: 50px
+  margin-right: 5px
+.signup-btn
+  background: none!important
+  border: none
+  padding: 0!important
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #069
+  text-decoration: underline
+  cursor: pointer
 </style>

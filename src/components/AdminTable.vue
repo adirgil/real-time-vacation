@@ -18,6 +18,7 @@
           <q-td key="hotel" :props="props">{{ props.row.hotel }}</q-td>
           <q-td key="phone" :props="props">{{ props.row.phone }}</q-td>
           <q-td key="price" :props="props">{{ props.row.price }} $</q-td>
+          <q-td key="createdOn" :props="props">{{ props.row.createdOn }}</q-td>
           <q-td key="actions" :props="props">
             <q-btn @click="remove(props.row.id)" size="10px" round color="red" icon="delete" />
           </q-td>
@@ -77,6 +78,7 @@ export default {
         {name: 'hotel', align: 'left', label: 'Hotel', field: 'hotel'},
         {name: 'phone', align: 'left', label: 'Phone Number', field: 'phone'},
         {name: 'price', align: 'left', label: 'Price', field: 'price', sortable: true, format: val => `${val}$`},
+        {name: 'createdOn', align: 'left', label: 'CreatedOn', field: 'createdOn', sortable: true},
         {name: 'actions', align: 'left', label: 'Actions'}
       ],
       rows: []

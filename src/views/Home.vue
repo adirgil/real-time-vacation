@@ -50,19 +50,19 @@
             <q-input type="number" v-model="maxPrice" outlined label="max Price($)" class="single-input" bg-color="white"/>
           </div>
 
-          <div class="cancel-span">
-            <q-btn class="glossy" size="10px" round color="red-14" icon="delete_forever" @click="cancelSearch()">
-              <q-tooltip
-                  transition-show="scale"
-                  transition-hide="scale"
-                  anchor="top middle"
-                  self="bottom middle"
-              >
-                clean search!
-              </q-tooltip>
-            </q-btn>
-            <span class="glossy text-white">{{ searchLabel }}</span>
-          </div>
+<!--          <div class="cancel-span">-->
+<!--            <q-btn class="glossy" size="10px" round color="red-14" icon="delete_forever" @click="cancelSearch()">-->
+<!--              <q-tooltip-->
+<!--                  transition-show="scale"-->
+<!--                  transition-hide="scale"-->
+<!--                  anchor="top middle"-->
+<!--                  self="bottom middle"-->
+<!--              >-->
+<!--                clean search!-->
+<!--              </q-tooltip>-->
+<!--            </q-btn>-->
+<!--            <span class="glossy text-white">{{ searchLabel }}</span>-->
+<!--          </div>-->
           <div class="q-pa-md search-div">
             <q-btn @click="search()" no-caps color="primary" icon-right="send" label="Search"/>
           </div>
@@ -219,11 +219,13 @@ export default {
 .search-div
   display: flex
   justify-content: flex-end
+  padding: 10px 0px 0px 0px
 
 .filter-div
   width: 100%
   height: 400px
-  background-image: url('../assets/ethan-robertson-SYx3UCHZJlo-unsplash.jpg')
+  //background-image: url('../assets/ethan-robertson-SYx3UCHZJlo-unsplash.jpg')
+  background-image: url("../assets/pexels-tomáš-malík-1998439.jpg")
   background-size: 100% 400px
   display: flex
   justify-content: center

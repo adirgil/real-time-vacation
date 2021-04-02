@@ -85,8 +85,6 @@ export default {
         this.iconColor = 'grey'
         this.favoriteTooltip = 'add to favorite'
       }
-      //this.currentDeal.isFavorite = !this.currentDeal.isFavorite
-      //this.$emit('favoriteChanged', id)
       this.updateWishlist(id)
     }
   },

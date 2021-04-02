@@ -35,21 +35,15 @@
       <q-input type="number" outlined v-model="localEditedDeal.stayTime" label="Stay Time (days)"/>
       <q-input type="text" outlined v-model="localEditedDeal.hotel" label="Hotel"/>
       <q-input type="text" outlined v-model="localEditedDeal.phone" label="Phone Number"/>
-      <q-input type="number" outlined v-model="localEditedDeal.purchaseCost" label="Purchase Cost"/>
-      <q-input type="number" outlined v-model="localEditedDeal.price" label="Price"/>
-      <!--      <div>-->
-      <!--        <q-file outlined v-model="uploadFile1" no-caps>upload a image</q-file>-->
-      <!--        <q-btn @click="uploadToStorage()">upload</q-btn>-->
-      <!--      </div>-->
-
-      <!--          append for q-file if you want to append-->
+      <q-input type="number" outlined v-model="localEditedDeal.purchaseCost" label="Purchase Cost ($)"/>
+      <q-input type="number" outlined v-model="localEditedDeal.price" label="Price ($)"/>
 
       <q-file
           v-model="imagesLocal"
           label="Pick files"
           outlined
           multiple
-          style="max-width: 300px">
+      >
         <q-icon name="attachment" color="orange"/>
       </q-file>
       <q-btn v-if="!deal && !spinner" class="glossy" color="accent" label="Add" @click="addDeal()"/>
@@ -151,14 +145,11 @@ export default {
       } else {
         console.log('no images')
         this.localEditedDeal.userId = window.user.uid
-        //this.localEditedDeal.createdTime = new Date()
 
         this.setEditedDeal(this.localEditedDeal)
         this.insertDeal()
         this.$router.push('/home')
       }
-
-      /////NEED TO FIX UPLOAD
 
     },
     updateDealLocal() {
@@ -173,6 +164,7 @@ export default {
               this.setEditedDeal(this.localEditedDeal)
               this.updateDeal()
               this.$router.push('/home')
+              //this.spinner = false
             })
       } else {
         console.log('no images')
@@ -180,6 +172,7 @@ export default {
         this.setEditedDeal(this.localEditedDeal)
         this.updateDeal()
         this.$router.push('/home')
+        // this.spinner = false
       }
 
     },
@@ -205,10 +198,6 @@ export default {
             Object.assign(this.localEditedDeal, this.editedDeal)
           })
     }
-
-    // if (this.deal) {
-    //   this.localEditedDeal = this.deal
-    // }
   }
 }
 </script>
@@ -216,7 +205,7 @@ export default {
 <style lang="sass" scoped>
 .all-inputs
   display: grid
-  grid-template-columns: 1fr 1fr 1fr
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr
   column-gap: 15px
   row-gap: 15px
 </style>
