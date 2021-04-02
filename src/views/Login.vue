@@ -23,16 +23,16 @@
       </div>
 
     </div>
-<!--    <h2>Login</h2>-->
-<!--    <q-input outlined v-model="email" label="Email" />-->
-<!--    <q-input outlined v-model="password" label="Password" />-->
-<!--    <q-btn @click="login()">Login</q-btn>-->
-<!--    <q-btn @click="loginWithGoogle()">Login With Google</q-btn>-->
+    <!--    <h2>Login</h2>-->
+    <!--    <q-input outlined v-model="email" label="Email" />-->
+    <!--    <q-input outlined v-model="password" label="Password" />-->
+    <!--    <q-btn @click="login()">Login</q-btn>-->
+    <!--    <q-btn @click="loginWithGoogle()">Login With Google</q-btn>-->
 
-<!--    <h2>Sign-Up</h2>-->
-<!--    <q-input outlined v-model="signup_email" label="Email" />-->
-<!--    <q-input outlined v-model="signup_password" label="Password" />-->
-<!--    <q-btn @click="signUp()">Sign Up!</q-btn>-->
+    <!--    <h2>Sign-Up</h2>-->
+    <!--    <q-input outlined v-model="signup_email" label="Email" />-->
+    <!--    <q-input outlined v-model="signup_password" label="Password" />-->
+    <!--    <q-btn @click="signUp()">Sign Up!</q-btn>-->
   </div>
 </template>
 
@@ -43,17 +43,17 @@ import {mapActions} from "vuex";
 
 export default {
   name: "Login",
-  data(){
+  data() {
     return {
-      email:'',
-      password:'',
-      signup_email:'',
+      email: '',
+      password: '',
+      signup_email: '',
       signup_password: ''
     }
   },
   methods: {
     ...mapActions('deals', ['setUser']),
-    signUp(){
+    signUp() {
       firebaseInstance.firebase.auth().createUserWithEmailAndPassword(this.signup_email, this.signup_password)
           .then((userCredential) => {
             // Signed in
@@ -67,7 +67,7 @@ export default {
           });
 
     },
-    login(){
+    login() {
       console.log(this.email, this.password)
       firebaseInstance.firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then((userCredential) => {
@@ -76,7 +76,7 @@ export default {
             console.log('SUCCESS with normal login')
             window.user = user.uid
             this.setUser()
-            console.log('opp: ',user)
+            console.log('opp: ', user)
             firebaseInstance.firebase.database().ref(`users/${user.uid}`)
                 .set({email: user.email})
 
@@ -88,26 +88,55 @@ export default {
             console.log(errorMessage)
           });
     },
+    loginWithFacebook() {
+      var provider = new firebaseInstance.firebase.auth.FacebookAuthProvider();
+      firebaseInstance.firebase.auth().signInWithPopup(provider).then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        var accessToken = credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        console.log('user with google!!!: ', user)
+        window.user = result.user
+        this.setUser()
+        firebaseInstance.firebase.database().ref(`users/${user.uid}`)
+            .update({email: user.email})
+        this.$router.push('/home')
+
+
+        // ...
+      })
+          .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+
+            // ...
+          });
+    },
     loginWithGoogle() {
       const provider = new firebaseInstance.firebase.auth.GoogleAuthProvider();
-      firebaseInstance.firebase.auth()
-          .signInWithPopup(provider)
-          .then((result) => {
-            /** @type {firebase.auth.OAuthCredential} */
-            var credential = result.credential;
+      firebaseInstance.firebase.auth().signInWithPopup(provider).then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
 
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-            console.log('user!!!: ', user)
-            window.user = result.user
-            this.setUser()
-            firebaseInstance.firebase.database().ref(`users/${user.uid}`)
-                .update({email: user.email})
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        console.log('user with google!!!: ', user)
+        window.user = result.user
+        this.setUser()
+        firebaseInstance.firebase.database().ref(`users/${user.uid}`)
+            .update({email: user.email})
 
-            this.$router.push('/home')
-          }).catch((error) => {
+        this.$router.push('/home')
+      }).catch((error) => {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -120,7 +149,7 @@ export default {
     }
   },
   created() {
-    if(window.user){
+    if (window.user) {
       //this.$router.push('/home')
     }
   }
@@ -133,6 +162,7 @@ export default {
   color: white
   display: flex
   justify-content: center
+
 .inline-box
   padding: 50px
   margin: 50px
@@ -140,24 +170,26 @@ export default {
   border-radius: 20px
   display: grid
   justify-items: center
+
 .login-box
   display: grid
   justify-items: center
   row-gap: 10px
+
 .login-icons
   height: 30px
   width: 30px
   margin-right: 5px
+
 .map-pin-icon
   height: 50px
   width: 50px
   margin-right: 5px
+
 .signup-btn
-  background: none!important
+  background: none !important
   border: none
-  padding: 0!important
-  /*optional*/
-  font-family: arial, sans-serif;
+  padding: 0 !important
   /*input has OS specific font-family*/
   color: #069
   text-decoration: underline
