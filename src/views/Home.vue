@@ -12,7 +12,7 @@
             </div>
           </div>
 
-          <div style="display:flex;" >
+          <div class="search-inputs">
             <q-select outlined
                       @filter="filterFn"
                       v-if="radioSelect!=='israel'"
@@ -21,54 +21,57 @@
                       bg-color="white"
                       class="single-input"
             />
-            <q-input outlined v-model="fromSearch" label="Depart" bg-color="white" style="width: 150px" class="single-input">
+            <q-input outlined v-model="fromSearch" label="Depart" bg-color="white"
+                     class="single-input">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date v-model="fromSearch">
                       <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
+                        <q-btn v-close-popup label="Close" color="primary" flat/>
                       </div>
                     </q-date>
                   </q-popup-proxy>
                 </q-icon>
               </template>
             </q-input>
-            <q-input outlined v-model="toSearch" label="Return" bg-color="white" style="width: 150px" class="single-input">
+            <q-input outlined v-model="toSearch" label="Return" bg-color="white"
+                     class="single-input">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                     <q-date v-model="toSearch">
                       <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
+                        <q-btn v-close-popup label="Close" color="primary" flat/>
                       </div>
                     </q-date>
                   </q-popup-proxy>
                 </q-icon>
               </template>
             </q-input>
-            <q-input type="number" v-model="maxPrice" outlined label="max Price($)" class="single-input" bg-color="white"/>
+            <q-input type="number" v-model="maxPrice" outlined label="max Price($)" class="single-input"
+                     bg-color="white"/>
           </div>
 
-<!--          <div class="cancel-span">-->
-<!--            <q-btn class="glossy" size="10px" round color="red-14" icon="delete_forever" @click="cancelSearch()">-->
-<!--              <q-tooltip-->
-<!--                  transition-show="scale"-->
-<!--                  transition-hide="scale"-->
-<!--                  anchor="top middle"-->
-<!--                  self="bottom middle"-->
-<!--              >-->
-<!--                clean search!-->
-<!--              </q-tooltip>-->
-<!--            </q-btn>-->
-<!--            <span class="glossy text-white">{{ searchLabel }}</span>-->
-<!--          </div>-->
+          <!--          <div class="cancel-span">-->
+          <!--            <q-btn class="glossy" size="10px" round color="red-14" icon="delete_forever" @click="cancelSearch()">-->
+          <!--              <q-tooltip-->
+          <!--                  transition-show="scale"-->
+          <!--                  transition-hide="scale"-->
+          <!--                  anchor="top middle"-->
+          <!--                  self="bottom middle"-->
+          <!--              >-->
+          <!--                clean search!-->
+          <!--              </q-tooltip>-->
+          <!--            </q-btn>-->
+          <!--            <span class="glossy text-white">{{ searchLabel }}</span>-->
+          <!--          </div>-->
           <div class="q-pa-md search-div">
             <q-btn @click="search()" no-caps color="primary" icon-right="send" label="Search"/>
           </div>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex cards">
         <div v-if="displayCards" v-for="deal in allDealsFiltered" :key="deal.id"
              class="q-pa-md row items-start q-gutter-md">
           <DealCard :deal="deal"/>
@@ -85,7 +88,7 @@ import DealCard from "@/components/DealCard";
 import DealInformation from "@/views/DealInformation";
 import firebaseDatabase from '../middleware/firebase/database/realtime-db-index'
 import {mapState, mapActions, mapMutations} from 'vuex'
-import { date } from 'quasar'
+import {date} from 'quasar'
 
 
 const stringOptions = ["", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla",
@@ -172,11 +175,11 @@ export default {
       const result = res.filter(deal => {
         return parseInt(deal.price) <= this.maxPrice
       })
-      const fromDate = date.extractDate(this.fromSearch , 'YYYY/MM/DD')
+      const fromDate = date.extractDate(this.fromSearch, 'YYYY/MM/DD')
       const toDate = date.extractDate(this.toSearch, 'YYYY/MM/DD')
       const finalResult = result.filter(deal => {
-        return fromDate >= date.extractDate(deal.date , 'YYYY-MM-DD')  &&
-            toDate <= date.extractDate(deal.returnDate , 'YYYY-MM-DD')
+        return fromDate >= date.extractDate(deal.date, 'YYYY-MM-DD') &&
+            toDate <= date.extractDate(deal.returnDate, 'YYYY-MM-DD')
       })
       this.searchLabel += ` between ${this.fromSearch} to ${this.toSearch}`
       this.allDealsFiltered = finalResult
@@ -257,4 +260,25 @@ export default {
 .single-input
   margin-right: 5px
   width: 9.4rem
+  max-width: 150px
+
+.search-inputs
+  display: flex
+.cards
+  display: flex
+  justify-content: flex-start
+
+@media only screen and (max-width: 700px)
+  .search-inputs
+    display: grid
+    gap: 5px
+  .inside-filter-div
+    max-height: 500px
+  .single-input
+    max-width: 400px
+    width: 100%
+  .cards
+    display: flex
+    justify-content: center
+
 </style>

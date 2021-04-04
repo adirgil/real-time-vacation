@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-card-section horizontal>
+    <q-card-section horizontal class="top-div">
       <div class="q-pa-md">
         <q-carousel
             class="img-style"
@@ -71,4 +71,12 @@ export default {
 .img-style
   height: 170px
   width: 400px
+
+@media only screen and (max-width: 700px)
+  .my-card
+    max-width: 100%
+  .top-div
+    display: grid
+  .img-style
+    width: auto
 </style>

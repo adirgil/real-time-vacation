@@ -2,15 +2,18 @@
   <div class="login-page">
     <div class="inline-box">
       <img class="map-pin-icon" src="../assets/globe.svg">
-      <div style="font-size: 30px">Real Time Vacation</div>
+      <div class="header" style="font-size: 30px">
+        <span>Real Time </span>
+        <span>Vacation</span>
+      </div>
       <div class="login-box" v-if="!displaySignup">
         <span style="font-size: 15px">Log In with </span>
-        <div>
+        <div class="login-with">
           <q-btn class="coloring-btn" @click="loginWithGoogle()" no-caps>
             <img class="login-icons" src="../assets/google.svg">
             Google
           </q-btn>
-          <q-btn class="coloring-btn" @click="loginWithFacebook()" no-caps style="margin-left: 10px">
+          <q-btn class="coloring-btn facebook-btn" @click="loginWithFacebook()" no-caps>
             <img class="login-icons" src="../assets/facebook2.svg">
             Facebook
           </q-btn>
@@ -62,7 +65,7 @@ export default {
   },
   methods: {
     ...mapActions('deals', ['setUser']),
-    ChangeLoginDiv(){
+    ChangeLoginDiv() {
       this.displaySignup = !this.displaySignup
     },
     signUp() {
@@ -206,7 +209,24 @@ export default {
   color: #069
   text-decoration: underline
   cursor: pointer
+
 .coloring-btn
   background-color: #02122c
   color: #FF7B59
+.facebook-btn
+  margin-left: 10px
+
+//@media (max-width: $breakpoint-xs-max)
+@media only screen and (max-width: 700px)
+  .header
+    display: grid
+    justify-items: center
+  .login-with
+    display: grid
+    justify-content: center
+    gap: 10px
+  .facebook-btn
+      margin-left: 0px
+/* styles for browsers larger than 960px; */
+
 </style>

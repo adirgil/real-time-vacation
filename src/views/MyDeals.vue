@@ -5,14 +5,15 @@
         My Deals
       </q-btn>
     </q-item-section>
-    <div class="q-pa-md" style="max-width: 80%">
+    <div class="q-pa-md list-div">
       <q-list bordered padding v-for="(deal, key) of myDealsArr" :key="key">
         <q-item>
           <q-item-section>
             <q-item-label style="font-size: 1.5rem" overline>{{deal.destination}}</q-item-label>
             <q-item-label>{{deal.date}} - {{deal.returnDate}}</q-item-label>
-            <q-item-label caption>purchase cost: {{deal.purchaseCost}}. purchase price: {{deal.price}}.</q-item-label>
-            <q-item-label caption>stay time: {{deal.stayTime}} days. hotel: {{deal.hotel}}.</q-item-label>
+            <q-item-label caption>purchase cost: {{deal.purchaseCost}}$. purchase price: {{deal.price}}$.</q-item-label>
+            <q-item-label caption>stay time: {{deal.stayTime}} days.</q-item-label>
+            <q-item-label caption>hotel: {{deal.hotel}}.</q-item-label>
           </q-item-section>
 
           <q-item-section side top>
@@ -87,4 +88,9 @@ export default {
 .header
   font-size: 30px
   padding: 10px
+.list-div
+  max-width: 80%
+@media only screen and (max-width: 700px)
+  .list-div
+    max-width: 100%
 </style>

@@ -125,4 +125,8 @@ export default {
 .card-icons
   padding: 0px
   min-width: 30px
+
+@media only screen and (max-width: 700px)
+  .my-card
+    width: 350px
 </style>

@@ -129,7 +129,7 @@ export default {
           })
 
     },
-    addDeal() {
+    async addDeal() {
       this.spinner = true
       if (this.imagesLocal) {
         firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.imagesLocal})
@@ -140,17 +140,23 @@ export default {
               //this.localEditedDeal.createdTime = 'ggg'
               this.setEditedDeal(this.localEditedDeal)
               this.insertDeal()
-              this.$router.push('/home')
+              setTimeout(() => {
+              }, 3000)
+                  .then(() => {
+                    console.log('fff')
+                  })
             })
       } else {
-        console.log('no images')
+        console.log('no images add')
         this.localEditedDeal.userId = window.user.uid
 
         this.setEditedDeal(this.localEditedDeal)
-        this.insertDeal()
-        this.$router.push('/home')
+        await this.insertDeal()
+        await setTimeout(() => {
+        }, 3000)
+        console.log('hi')
+        //this.$router.push('/home')
       }
-
     },
     updateDealLocal() {
       this.spinner = true
@@ -167,7 +173,7 @@ export default {
               //this.spinner = false
             })
       } else {
-        console.log('no images')
+        console.log('no images update')
         this.localEditedDeal.userId = window.user.uid
         this.setEditedDeal(this.localEditedDeal)
         this.updateDeal()
@@ -208,4 +214,8 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr
   column-gap: 15px
   row-gap: 15px
+
+@media only screen and (max-width: 700px)
+  .all-inputs
+    grid-template-columns: 1fr
 </style>
