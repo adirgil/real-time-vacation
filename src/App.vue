@@ -4,7 +4,7 @@
     <q-page-container>
         <q-toolbar class="my-toolbar">
 
-        <q-btn flat no-caps @click="goToHome()">
+        <q-btn flat no-caps @click="goToHome()" style="font-size: 25px">
           <img class="map-pin-icon" src="./assets/globe.svg">
            Real Time Vacation
         </q-btn>
@@ -24,7 +24,7 @@
                   <q-avatar icon="post_add" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>Post New Deal</q-item-label>
+                  <q-item-label style="font-family: system-ui">Post New Deal</q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -33,7 +33,7 @@
                   <q-avatar icon="assignment" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>My Deals</q-item-label>
+                  <q-item-label style="font-family: system-ui">My Deals</q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -42,7 +42,7 @@
                   <q-avatar icon="favorite" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>Wishlist</q-item-label>
+                  <q-item-label style="font-family: system-ui">Wishlist</q-item-label>
                 </q-item-section>
               </q-item>
 
@@ -51,7 +51,7 @@
                   <q-avatar icon="keyboard_backspace" color="primary" text-color="white" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>Backoffice</q-item-label>
+                  <q-item-label style="font-family: system-ui">Backoffice</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -125,6 +125,7 @@ export default {
 
 <style lang="sass" scoped>
 .bg-sky
+  font-family: system-ui
   //background-image: url('assets/3.jpg')
 .map-pin-icon
   height: 30px

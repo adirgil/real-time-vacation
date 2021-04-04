@@ -3,14 +3,14 @@
     <div class="inline-box">
       <img class="map-pin-icon" src="../assets/globe.svg">
       <div style="font-size: 30px">Real Time Vacation</div>
-      <div class="login-box">
+      <div class="login-box" v-if="!displaySignup">
         <span style="font-size: 15px">Log In with </span>
         <div>
-          <q-btn @click="loginWithGoogle()" no-caps>
+          <q-btn class="coloring-btn" @click="loginWithGoogle()" no-caps>
             <img class="login-icons" src="../assets/google.svg">
             Google
           </q-btn>
-          <q-btn @click="loginWithFacebook()" no-caps style="margin-left: 10px">
+          <q-btn class="coloring-btn" @click="loginWithFacebook()" no-caps style="margin-left: 10px">
             <img class="login-icons" src="../assets/facebook2.svg">
             Facebook
           </q-btn>
@@ -18,8 +18,16 @@
         <span>or</span>
         <q-input outlined v-model="email" label="Email"/>
         <q-input outlined v-model="password" label="Password"/>
-        <q-btn no-caps @click="login()">Log In</q-btn>
-        <span>do not have an account? <span class="signup-btn"> Sign Up</span></span>
+        <q-btn class="coloring-btn" no-caps @click="login()">Log In</q-btn>
+        <span>do not have an account? <span @click="ChangeLoginDiv()" class="signup-btn"> Sign Up</span></span>
+      </div>
+
+      <div class="signup-box login-box" v-if="displaySignup">
+        <span style="font-size: 15px">Sign Up</span>
+        <q-input outlined v-model="email" label="Email"/>
+        <q-input outlined v-model="password" label="Password"/>
+        <q-btn class="coloring-btn" no-caps @click="signUp()">Sign Up</q-btn>
+        <span>go <span @click="ChangeLoginDiv()" class="signup-btn"> Back</span> to login</span>
       </div>
 
     </div>
@@ -48,11 +56,15 @@ export default {
       email: '',
       password: '',
       signup_email: '',
-      signup_password: ''
+      signup_password: '',
+      displaySignup: false
     }
   },
   methods: {
     ...mapActions('deals', ['setUser']),
+    ChangeLoginDiv(){
+      this.displaySignup = !this.displaySignup
+    },
     signUp() {
       firebaseInstance.firebase.auth().createUserWithEmailAndPassword(this.signup_email, this.signup_password)
           .then((userCredential) => {
@@ -194,4 +206,7 @@ export default {
   color: #069
   text-decoration: underline
   cursor: pointer
+.coloring-btn
+  background-color: #02122c
+  color: #FF7B59
 </style>
