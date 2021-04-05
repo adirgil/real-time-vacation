@@ -1,7 +1,6 @@
 <template>
   <q-card class="my-card bg-mycolor">
-    <q-img :src="url">
-<!--      <q-btn round color="brown-5" icon="navigate_next" @click="refresh" class="q-mb-md" size="10px"/>-->
+    <q-img :src="url" style="max-height: 150px">
       <div class="absolute-bottom" style="padding: 0px 0px 0px 10px">
         <div class="text-h6">{{ this.currentDeal.destination }}</div>
         <div class="text-subtitle2">{{ this.currentDeal.sellerName }}</div>

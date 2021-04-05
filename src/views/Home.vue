@@ -52,22 +52,9 @@
             <q-input type="number" v-model="maxPrice" outlined label="max Price($)" class="single-input"
                      bg-color="white"/>
           </div>
-
-          <!--          <div class="cancel-span">-->
-          <!--            <q-btn class="glossy" size="10px" round color="red-14" icon="delete_forever" @click="cancelSearch()">-->
-          <!--              <q-tooltip-->
-          <!--                  transition-show="scale"-->
-          <!--                  transition-hide="scale"-->
-          <!--                  anchor="top middle"-->
-          <!--                  self="bottom middle"-->
-          <!--              >-->
-          <!--                clean search!-->
-          <!--              </q-tooltip>-->
-          <!--            </q-btn>-->
-          <!--            <span class="glossy text-white">{{ searchLabel }}</span>-->
-          <!--          </div>-->
           <div class="q-pa-md search-div">
             <q-btn @click="search()" no-caps color="primary" icon-right="send" label="Search"/>
+            <q-btn @click="cancelSearch"></q-btn>
           </div>
         </div>
       </div>
@@ -127,7 +114,6 @@ export default {
   data() {
     return {
       tab: '',
-      searchLabel: '',
       fromSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
       toSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
       maxPrice: 0,
@@ -156,42 +142,41 @@ export default {
     search() {
       let res
       if (this.radioSelect == 'israel') {
-        this.searchLabel = 'Israel, '
         res = this.deals.filter(deal => {
           return deal.destination == 'Israel'
         })
       } else {   //this.radioSelect == all
         if (this.selectedCountry == '') {
           res = this.deals
-          this.searchLabel = 'All, '
         } else {
           res = this.deals.filter(deal => {
             return deal.destination == this.selectedCountry
           })
-          this.searchLabel = `${this.selectedCountry}, `
         }
       }
-      this.searchLabel += ` max:${this.maxPrice}$, `
       const result = res.filter(deal => {
         return parseInt(deal.price) <= this.maxPrice
       })
-      const fromDate = date.extractDate(this.fromSearch, 'YYYY/MM/DD')
-      const toDate = date.extractDate(this.toSearch, 'YYYY/MM/DD')
+      //console.log('result: ',result)
+      const fromDate = date.extractDate(this.fromSearch, 'YYYY/MM/DD').getTime()
+      //console.log(fromDate)
+      const toDate = date.extractDate(this.toSearch, 'YYYY/MM/DD').getTime()
+      //console.log(toDate)
       const finalResult = result.filter(deal => {
-        return fromDate >= date.extractDate(deal.date, 'YYYY-MM-DD') &&
-            toDate <= date.extractDate(deal.returnDate, 'YYYY-MM-DD')
+        //console.log(date.extractDate(deal.date, 'YYYY-MM-DD').getTime())
+        //console.log(date.extractDate(deal.returnDate, 'YYYY-MM-DD').getTime())
+        return fromDate >= date.extractDate(deal.date, 'YYYY-MM-DD').getTime() &&
+            toDate <= date.extractDate(deal.returnDate, 'YYYY-MM-DD').getTime()
       })
-      this.searchLabel += ` between ${this.fromSearch} to ${this.toSearch}`
       this.allDealsFiltered = finalResult
-    },
-    cancelSearch() {
-      this.allDealsFiltered = this.deals
-      this.searchLabel = ''
     },
     filterOnlyInIsrael() {
       this.allDealsFiltered = this.deals.filter(deal => {
         return deal.destination == 'Israel'
       })
+    },
+    cancelSearch(){
+      this.allDealsFiltered = this.deals
     },
     filterFn(val, update) {
       if (val === '') {

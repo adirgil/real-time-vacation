@@ -25,10 +25,11 @@ export default {
     updateDeal: async ({state, commit}) => {
         const deal = {}
         Object.assign(deal, state.editedDeal)
-        deal.id = state.editedDealId
-        //Save in DB
-        await database.update({entity: 'deals', id: deal.id, deal})
+        delete deal.id
 
+        //Save in DB
+        await database.update({entity: 'deals', id: state.editedDealId, deal})
+        deal.id = state.editedDealId
         //Save in Store
         commit('resetEditedDealId')
         commit('resetEditedDeal')

@@ -129,7 +129,7 @@ export default {
           })
 
     },
-    async addDeal() {
+    addDeal() {
       this.spinner = true
       if (this.imagesLocal) {
         firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.imagesLocal})
@@ -139,23 +139,14 @@ export default {
               this.localEditedDeal.userId = window.user.uid
               //this.localEditedDeal.createdTime = 'ggg'
               this.setEditedDeal(this.localEditedDeal)
-              this.insertDeal()
-              setTimeout(() => {
-              }, 3000)
-                  .then(() => {
-                    console.log('fff')
-                  })
+              this.insertDeal().then(()=>this.$router.push('/home'))
             })
       } else {
         console.log('no images add')
         this.localEditedDeal.userId = window.user.uid
 
         this.setEditedDeal(this.localEditedDeal)
-        await this.insertDeal()
-        await setTimeout(() => {
-        }, 3000)
-        console.log('hi')
-        //this.$router.push('/home')
+        this.insertDeal().then(()=>this.$router.push('/home'))
       }
     },
     updateDealLocal() {
@@ -211,7 +202,7 @@ export default {
 <style lang="sass" scoped>
 .all-inputs
   display: grid
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+  grid-template-columns: 1fr 1fr 1fr 1fr
   column-gap: 15px
   row-gap: 15px
 
