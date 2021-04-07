@@ -18,6 +18,7 @@
             Facebook
           </q-btn>
         </div>
+        <span class="error-label">{{ errorLabel }}</span>
         <span>or</span>
         <q-input outlined v-model="email" label="Email"/>
         <q-input outlined v-model="password" label="Password"/>
@@ -60,7 +61,8 @@ export default {
       password: '',
       signup_email: '',
       signup_password: '',
-      displaySignup: false
+      displaySignup: false,
+      errorLabel:''
     }
   },
   methods: {
@@ -78,6 +80,8 @@ export default {
           .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
+            this.errorLabel = errorMessage
+            console.log(error)
             // ..
           });
 
@@ -100,7 +104,8 @@ export default {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorMessage)
+            this.errorLabel = errorMessage
+            console.log(error)
           });
     },
     loginWithFacebook() {
@@ -112,7 +117,7 @@ export default {
         var accessToken = credential.accessToken;
         // The signed-in user info.
         var user = result.user;
-        console.log('user with google!!!: ', user)
+        console.log('user with facebook!!!: ', user)
         window.user = result.user
         this.setUser()
         firebaseInstance.firebase.database().ref(`users/${user.uid}`)
@@ -130,7 +135,8 @@ export default {
             var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
-
+            this.errorLabel = errorMessage
+            console.log(error)
             // ...
           });
     },
@@ -159,6 +165,8 @@ export default {
         var email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         var credential = error.credential;
+        this.errorLabel = errorMessage
+        console.log(error)
         // ...
       });
     }
@@ -215,9 +223,12 @@ export default {
   color: #FF7B59
 .facebook-btn
   margin-left: 10px
-
+.error-label
+  width: 50%
 //@media (max-width: $breakpoint-xs-max)
 @media only screen and (max-width: 700px)
+  .error-label
+    width: 100%
   .header
     display: grid
     justify-items: center

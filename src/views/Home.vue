@@ -51,10 +51,11 @@
             </q-input>
             <q-input type="number" v-model="maxPrice" outlined label="max Price($)" class="single-input"
                      bg-color="white"/>
+            <q-btn @click="cancelSearch" color="red" icon="clear"/>
+
           </div>
           <div class="q-pa-md search-div">
             <q-btn @click="search()" no-caps color="primary" icon-right="send" label="Search"/>
-            <q-btn @click="cancelSearch"></q-btn>
           </div>
         </div>
       </div>
@@ -114,8 +115,8 @@ export default {
   data() {
     return {
       tab: '',
-      fromSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
-      toSearch: date.formatDate(Date.now(), 'YYYY/MM/DD'),
+      fromSearch: date.formatDate(date.subtractFromDate(Date.now(), {year:1}), 'YYYY/MM/DD'),
+      toSearch: date.formatDate(date.addToDate(Date.now(), {year:1}), 'YYYY/MM/DD'),
       maxPrice: 0,
       radioSelect: 'all',
       countryOptions: stringOptions,
@@ -155,18 +156,16 @@ export default {
         }
       }
       const result = res.filter(deal => {
+        if(this.maxPrice === 0){
+          this.maxPrice = 999999
+        }
         return parseInt(deal.price) <= this.maxPrice
       })
-      //console.log('result: ',result)
       const fromDate = date.extractDate(this.fromSearch, 'YYYY/MM/DD').getTime()
-      //console.log(fromDate)
       const toDate = date.extractDate(this.toSearch, 'YYYY/MM/DD').getTime()
-      //console.log(toDate)
       const finalResult = result.filter(deal => {
-        //console.log(date.extractDate(deal.date, 'YYYY-MM-DD').getTime())
-        //console.log(date.extractDate(deal.returnDate, 'YYYY-MM-DD').getTime())
-        return fromDate >= date.extractDate(deal.date, 'YYYY-MM-DD').getTime() &&
-            toDate <= date.extractDate(deal.returnDate, 'YYYY-MM-DD').getTime()
+        return fromDate <= date.extractDate(deal.date, 'YYYY-MM-DD').getTime() &&
+            toDate >= date.extractDate(deal.returnDate, 'YYYY-MM-DD').getTime()
       })
       this.allDealsFiltered = finalResult
     },
