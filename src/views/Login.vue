@@ -28,8 +28,8 @@
 
       <div class="signup-box login-box" v-if="displaySignup">
         <span style="font-size: 15px">Sign Up</span>
-        <q-input outlined v-model="email" label="Email"/>
-        <q-input outlined v-model="password" label="Password"/>
+        <q-input outlined v-model="signup_email" label="Email"/>
+        <q-input outlined v-model="signup_password" label="Password"/>
         <q-btn class="coloring-btn" no-caps @click="signUp()">Sign Up</q-btn>
         <span>go <span @click="ChangeLoginDiv()" class="signup-btn"> Back</span> to login</span>
       </div>
@@ -76,6 +76,7 @@ export default {
             // Signed in
             var user = userCredential.user;
             console.log('user added')
+            this.ChangeLoginDiv()
           })
           .catch((error) => {
             var errorCode = error.code;

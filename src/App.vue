@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf" class="bg-sky">
 
     <q-page-container>
-      <q-toolbar class="my-toolbar">
+      <q-toolbar class="my-toolbar" v-if="this.$route.fullPath !== '/'">
 
         <q-btn flat no-caps @click="goToHome()" class="rtv">
           <img class="map-pin-icon" src="./assets/globe.svg">
@@ -122,6 +122,9 @@ export default {
       this.tab = ''
       this.$router.push('/post-new-deal')
     }
+  },
+  created() {
+    console.log(this.$route.fullPath === "/")
   }
 }
 </script>
