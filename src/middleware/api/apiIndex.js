@@ -16,7 +16,6 @@ export default {
     create: options => {
         return axios.post(`http://localhost:4000/${options.entity}`, options.deal)
             .then(response => {
-                console.log('post', response);
                 return response
             })
             .catch(error => {
@@ -26,7 +25,6 @@ export default {
     remove: options => {
         return axios.delete(`http://localhost:4000/${options.entity}/${options.id}`)
             .then(response => {
-                console.log('delete', response);
                 return response
             })
             .catch(error => {
@@ -36,7 +34,6 @@ export default {
     update: options => {
         return axios.put(`http://localhost:4000/${options.entity}/${options.id}`, options.deal)
             .then(response => {
-                console.log('put', response);
                 return response
             })
             .catch(error => {
@@ -46,8 +43,6 @@ export default {
     getDealById: options=>{
         return axios.get(`http://localhost:4000/${options.entity}/${options.id}`)
             .then((response) => {
-                // handle success
-                console.log('hhiii' , response);
                 return response.data.result[0]
             })
             .catch((error) => {

@@ -9,6 +9,13 @@ export default {
         } else {
             commit('setUsername', window.user.displayName)
             commit('setEmail', window.user.email)
+            let role = ''
+            if(window.user.email === 'adirgil7777@gmail.com'){
+                role = 'admin'
+            }else{
+                role = 'client'
+            }
+            commit('setRole', role)
         }
 
     },

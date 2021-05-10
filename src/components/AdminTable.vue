@@ -87,33 +87,21 @@ export default {
   methods: {
     ...mapActions('deals', ['getDeals', 'deleteDeal']),
     ...mapMutations('deals', ['setEditedDeal', "setEditedDealId"]),
-    // read(){
-    //   firebaseDatabase.read({entity: this.tableName})
-    //       .then(res =>{
-    //         this.rows = res
-    //       })
-    // },
     remove(id) {
       this.setEditedDealId(id)
       this.deleteDeal()
-      // firebaseDatabase.remove({entity: this.tableName,id:id})
-      //     .then(res =>{
-      //       console.log('res::::::::::::: ', res)
-      //       this.read()
-      //     })
     },
     goToDealInfo(id){
       this.$router.push(`/deal-information/${id}`)
     }
   },
   created() {
-    //this.read()
     this.getDeals()
   },
   watch:{
     isReload(){
      // this.read()
-      console.log('hi')
+     //  console.log('hi')
     }
   }
 }

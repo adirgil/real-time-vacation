@@ -35,16 +35,7 @@
       </div>
 
     </div>
-    <!--    <h2>Login</h2>-->
-    <!--    <q-input outlined v-model="email" label="Email" />-->
-    <!--    <q-input outlined v-model="password" label="Password" />-->
-    <!--    <q-btn @click="login()">Login</q-btn>-->
-    <!--    <q-btn @click="loginWithGoogle()">Login With Google</q-btn>-->
 
-    <!--    <h2>Sign-Up</h2>-->
-    <!--    <q-input outlined v-model="signup_email" label="Email" />-->
-    <!--    <q-input outlined v-model="signup_password" label="Password" />-->
-    <!--    <q-btn @click="signUp()">Sign Up!</q-btn>-->
   </div>
 </template>
 
@@ -62,7 +53,7 @@ export default {
       signup_email: '',
       signup_password: '',
       displaySignup: false,
-      errorLabel:''
+      errorLabel: ''
     }
   },
   methods: {
@@ -76,6 +67,8 @@ export default {
             // Signed in
             var user = userCredential.user;
             console.log('user added')
+            firebaseInstance.firebase.database().ref(`users/${user.uid}`)
+                .set({email: user.email, role: 'client'})
             this.ChangeLoginDiv()
           })
           .catch((error) => {
@@ -97,8 +90,6 @@ export default {
             window.user = user.uid
             this.setUser()
             console.log('opp: ', user)
-            firebaseInstance.firebase.database().ref(`users/${user.uid}`)
-                .set({email: user.email})
 
             this.$router.push('/home')
           })
@@ -121,8 +112,9 @@ export default {
         console.log('user with facebook!!!: ', user)
         window.user = result.user
         this.setUser()
+        let role = result.user.email === 'adirgil7777@gmail.com' ? 'admin' : 'client'
         firebaseInstance.firebase.database().ref(`users/${user.uid}`)
-            .update({email: user.email})
+            .update({email: user.email, role: role})
         this.$router.push('/home')
 
 
@@ -154,8 +146,9 @@ export default {
         console.log('user with google!!!: ', user)
         window.user = result.user
         this.setUser()
+        let role = result.user.email === 'adirgil7777@gmail.com' ? 'admin' : 'client'
         firebaseInstance.firebase.database().ref(`users/${user.uid}`)
-            .update({email: user.email})
+            .update({email: user.email, role: role})
 
         this.$router.push('/home')
       }).catch((error) => {
@@ -222,8 +215,10 @@ export default {
 .coloring-btn
   background-color: #02122c
   color: #FF7B59
+
 .facebook-btn
   margin-left: 10px
+
 .error-label
   width: 50%
 //@media (max-width: $breakpoint-xs-max)
@@ -238,7 +233,7 @@ export default {
     justify-content: center
     gap: 10px
   .facebook-btn
-      margin-left: 0px
+    margin-left: 0px
 /* styles for browsers larger than 960px; */
 
 </style>

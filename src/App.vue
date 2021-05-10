@@ -47,7 +47,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-item clickable v-close-popup @click="goToBackOffice()">
+              <q-item v-if="this.userRole === 'admin' || userDetails.email === 'adirgil7777@gmail.com'" clickable v-close-popup @click="goToBackOffice()">
                 <q-item-section avatar>
                   <q-avatar icon="keyboard_backspace" color="primary" text-color="white"/>
                 </q-item-section>
@@ -83,20 +83,21 @@ export default {
   components: {
     HelloWorld, BackOffice
   },
-  computed: mapState('deals', ['username', 'userEmail']),
+  computed: mapState('deals', ['username', 'userEmail','userRole']),
 
   data() {
     return {
       leftDrawerOpen: false,
       tab: '',
-      fab2: false
+      fab2: false,
+      userDetails: ''
     }
   },
   methods: {
     ...mapActions('deals', ['setUser']),
     logout() {
       firebaseInstance.firebase.auth().signOut().then(() => {
-        console.log(JSON.stringify(window.user) + 'Logged out!!')
+        // console.log(JSON.stringify(window.user) + 'Logged out!!')
         this.setUser('out')
         this.$router.push('/')
       }).catch((error) => {
@@ -125,6 +126,7 @@ export default {
   },
   created() {
     console.log(this.$route.fullPath === "/")
+    this.userDetails = window.user
   }
 }
 </script>

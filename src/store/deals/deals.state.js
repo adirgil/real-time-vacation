@@ -1,6 +1,7 @@
 export default {
     username:'',
     userEmail:'',
+    userRole:'',
     deals: [],
     wishlistArray:[],
     editedDealId: '',

@@ -125,7 +125,7 @@ export default {
     uploadToStorage() {
       firebaseDatabase.uploadFiles({entity: 'deals-images', files: this.images})
           .then(result => {
-            console.log('URL: ', result)
+            // console.log('URL: ', result)
           })
 
     },

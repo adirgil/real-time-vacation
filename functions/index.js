@@ -12,7 +12,7 @@ exports.generateCreated = functions.database.ref('/deals/{dealId}')
     .onCreate((snapshot, context) => {
         // Grab the current value of what was written to the Realtime Database.
         const original = snapshot.val();
-        console.log(original, 'ggggg')
+        // console.log(original, 'onCreate')
         const today = new Date()
         const strCreated = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear() + " " + today.getHours()
             + ":" + today.getMinutes() + ":" + today.getSeconds()

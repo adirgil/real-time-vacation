@@ -1,8 +1,8 @@
 <template>
   <div style="background-color: #f1f2f8">
     <AddDeal v-if="dataForInputs && deal.userId === windowUserId" :tableName="this.tableName" :deal="this.deal"/>
-    <div class="q-pa-md">
-      <div class="">
+    <div class="q-pa-md ">
+      <div class="carousel-div">
         <q-carousel
             swipeable
             animated
@@ -140,18 +140,9 @@ export default {
     },
     getDealById() {
       this.deal = this.deals.filter(d => d.id === this.$route.params.id)[0]
-      console.log(this.deal.userId)
-      console.log(window.user.uid)
       this.windowUserId = window.user.uid
       this.dataForInputs = true
-      // firebaseDatabase.readSingleDocById({entity: this.tableName, id: this.$route.params.id})
-      //     .then(res => {
-      //       this.deal = res
-      //       this.deal.id = this.$route.params.id
-      //       this.dataForInputs = true
-      //       console.log(this.deal)
-      //
-      //     })
+
     },
   },
   created() {
@@ -185,10 +176,17 @@ export default {
 
 .details-mobile
   display: none
+.carousel-div
+  width: 70%
+  margin-left: 15%
 
 @media only screen and (max-width: 700px)
   .details
     display: none
   .details-mobile
     display: block
+  .carousel-div
+    width: 100%
+    margin: 0
+
 </style>

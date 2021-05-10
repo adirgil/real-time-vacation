@@ -30,16 +30,6 @@ export default {
   created() {
     this.arrayOfWishlist = this.deals.filter(deal => this.wishlistArray.includes(deal.id))
     console.log(this.arrayOfWishlist,'wishlist')
-    //const wishlistIds = localStorageDriver.selectAllWishListIds()
-    //const allDeals = localStorageDriver.selectAllDeals('dealsTable')
-    // firebaseDatabase.read({entity: 'deals'}).then(allDeals => {
-    //   console.log('deals: ', allDeals)
-    //   firebaseDatabase.getWishListArray({id: window.user.uid}).then(wishlist => {
-    //     this.wishlistArray = allDeals.filter(deal => {
-    //       return wishlist.includes(deal.id)
-    //     })
-    //   })
-    // })
   }
 }
 </script>

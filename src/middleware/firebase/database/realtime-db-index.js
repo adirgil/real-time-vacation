@@ -11,7 +11,7 @@ function create(options) {
 function remove(options) {
     return firebaseInstance.firebase.database().ref(`${options.entity}/${options.id}`)
         .remove().then(res => {
-            console.log('res from remove', res)
+            // console.log('res from remove', res)
         })
 
 }
@@ -33,7 +33,7 @@ function read(options) {
     return firebaseInstance.firebase.database().ref(`${options.entity}`)
         .once('value')
         .then(res => {
-            console.log('from get: ', res.val())
+            // console.log('from get: ', res.val())
             const arr = []
             const map = res.val()
             for (const key in map) {
@@ -56,26 +56,15 @@ function readSingleDocById(options) {
 }
 
 async function uploadFiles(options) {
-    console.log(options)
     let urlArray = []
     for(const file of options.files){
         const storageRef = firebaseInstance.firebase.storage().ref(`${options.entity}/${file.name}`)
         const snapshot = await storageRef.put(file)
-        console.log(snapshot)
         const urlString = await storageRef.getDownloadURL()
         urlArray.push(urlString)
-        console.log('url: ',urlString)
+        // console.log('url: ',urlString)
     }
     return urlArray
-    // const storageRef = firebaseInstance.firebase.storage().ref(`${options.entity}/${options.file.name}`)
-    // return storageRef.put(options.file).then((snapshot) => {
-    //     console.log('file uploaded!!');
-    //     console.log(snapshot)
-    //     return storageRef.getDownloadURL().then(url => {
-    //         console.log('url: ',url)
-    //         return url.toString()
-    //     })
-    // })
 }
 
 function getWishListArray(options){
